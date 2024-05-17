@@ -1,0 +1,22 @@
+{
+  "name": "craft-contact-form-extended",
+  "description": "Adds functionality to the Contact Form plugin",
+  "version": "0.9.0",
+  "scripts": {
+    "release": "release-it"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vandres/craft-contact-form-extended.git"
+  },
+  "author": "Volker Andres <andres@voan.ch",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/vandres/craft-contact-form-extended/issues"
+  },
+  "homepage": "https://github.com/vandres/craft-contact-form-extended#readme",
+  "devDependencies": {
+    "release-it": "^17.2.1"
+  }
+}

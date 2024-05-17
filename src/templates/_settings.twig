@@ -1,0 +1,26 @@
+{# @var plugin \vandres\craftcontactformextended\ContactFormExtended #}
+{# @var settings \vandres\craftcontactformextended\models\Settings #}
+
+{% import '_includes/forms.twig' as forms %}
+
+{% macro configWarning(setting) -%}
+    {% set setting = '<code>'~setting~'</code>' %}
+    {{ "This is being overridden by the {setting} config setting in your {file} config file."|t('contact-form-extended', {
+        setting: setting,
+        file: '<code>contact-form-extended.php</code>'
+    })|raw }}
+{%- endmacro %}
+
+{% from _self import configWarning %}
+
+{{ forms.textField({
+    label:        "Time spend on form (in seconds)"|t('contact-form-extended'),
+    id:           'secondsSpentOnForm',
+    type:         'number',
+    min:          0,
+    name:         'secondsSpentOnForm',
+    instructions: "Set the time, how long a user needs to spend time on the form, to not be suspected a bot. Leave empty or set to „0“ to disable."|t('contact-form-extended'),
+    value:        (settings.secondsSpentOnForm ?: 0),
+    disabled:     'secondsSpentOnForm' in overrides,
+    warning:      'secondsSpentOnForm' in overrides ? configWarning('secondsSpentOnForm'),
+}) }}
