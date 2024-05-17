@@ -6,12 +6,12 @@ use craft\base\Model;
 
 class Settings extends Model
 {
-    public int $secondsSpentOnForm = 0;
+    public int $secondsSpentOnFormThreshold = 0;
 
     public function defineRules(): array
     {
         return [
-            [['secondsSpentOnForm'], 'integer', 'min' => 0],
+            [['secondsSpentOnFormThreshold'], 'integer', 'min' => 0],
         ];
     }
 }

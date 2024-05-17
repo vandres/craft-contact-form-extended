@@ -15,12 +15,12 @@
 
 {{ forms.textField({
     label:        "Time spend on form (in seconds)"|t('contact-form-extended'),
-    id:           'secondsSpentOnForm',
+    id:           'secondsSpentOnFormThreshold',
     type:         'number',
     min:          0,
-    name:         'secondsSpentOnForm',
+    name:         'secondsSpentOnFormThreshold',
     instructions: "Set the time, how long a user needs to spend time on the form, to not be suspected a bot. Leave empty or set to „0“ to disable."|t('contact-form-extended'),
-    value:        (settings.secondsSpentOnForm ?: 0),
-    disabled:     'secondsSpentOnForm' in overrides,
-    warning:      'secondsSpentOnForm' in overrides ? configWarning('secondsSpentOnForm'),
+    value:        (settings.secondsSpentOnFormThreshold ?: 0),
+    disabled:     'secondsSpentOnFormThreshold' in overrides,
+    warning:      'secondsSpentOnFormThreshold' in overrides ? configWarning('secondsSpentOnFormThreshold'),
 }) }}

@@ -35,7 +35,7 @@ You can use the settings dialog in the control panel. But I would recommend crea
 
 ```php
 return [
-    'secondsSpentOnForm' => 3, // 0 to disable
+    'secondsSpentOnFormThreshold' => 3, // 0 to disable
 ];
 
 ```
@@ -43,6 +43,7 @@ return [
 ## Roadmap
 
 - simple spam protection via "time spent on form"
+- write filtered submissions to log (configurable) 
 
 ## Support my work
 

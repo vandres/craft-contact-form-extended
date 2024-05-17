@@ -5,7 +5,13 @@ namespace vandres\craftcontactformextended;
 use Craft;
 use craft\base\Model;
 use craft\base\Plugin;
+use craft\contactform\events\SendEvent;
+use craft\contactform\Mailer;
+use craft\web\twig\variables\CraftVariable;
 use vandres\craftcontactformextended\models\Settings;
+use vandres\craftcontactformextended\services\FormService;
+use vandres\craftcontactformextended\variables\FormVariable;
+use yii\base\Event;
 
 /**
  * Contact Form Extended plugin
@@ -25,6 +31,7 @@ class ContactFormExtended extends Plugin
     {
         return [
             'components' => [
+                'formService' => FormService::class,
             ],
         ];
     }
@@ -38,6 +45,7 @@ class ContactFormExtended extends Plugin
         $this->setUpCp();
     }
 
+    // TODO should log be written
     protected function createSettingsModel(): ?Model
     {
         return Craft::createObject(Settings::class);
@@ -71,6 +79,8 @@ class ContactFormExtended extends Plugin
             if (!Craft::$app->getRequest()->getIsSiteRequest()) {
                 return;
             }
+
+            $this->initMailHook();
         });
     }
 
@@ -81,5 +91,38 @@ class ContactFormExtended extends Plugin
                 return;
             }
         });
+    }
+
+    private function initMailHook()
+    {
+        Event::on(
+            CraftVariable::class,
+            CraftVariable::EVENT_INIT,
+            function (Event $event) {
+                /** @var CraftVariable $variable */
+                $variable = $event->sender;
+                $variable->set('form', [
+                    'class' => FormVariable::class,
+                ]);
+            }
+        );
+
+        if (!class_exists(Mailer::class)) {
+            return;
+        }
+
+        Event::on(
+            Mailer::class,
+            Mailer::EVENT_BEFORE_SEND,
+            function (SendEvent $event) {
+                try {
+                    $this->formService->checkSubmission();
+                } catch (\Exception $error) {
+                    // TODO write log
+                    Craft::warning($error->getMessage());
+                    $event->isSpam = true;
+                }
+            }
+        );
     }
 }
