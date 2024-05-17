@@ -36,14 +36,40 @@ You can use the settings dialog in the control panel. But I would recommend crea
 ```php
 return [
     'secondsSpentOnFormThreshold' => 3, // 0 to disable
+    'logSpam' => false,
+    'logAll' => false,
 ];
 
 ```
 
+## Usage
+
+Just add the following `prepareSubmission()` call somewhere in the form template. Example:
+
+```twig
+<form sprig s-method="post" s-action="contact-form/send" accept-charset="UTF-8">
+    {# prepare form submission check #}
+    {{ craft.form.service.prepareSubmission() }} 
+    {{ hiddenInput('fromName', title ) }}
+
+    {% if page is defined and page %}
+        {{ redirectInput(page.url) }}
+    {% endif %}
+</form>
+```
+
+If you forget that call, all submissions might be marked as spam!
+
+### Edge Case
+
+If you cache the contact form, the `prepareSubmission()` might not be called and the form would misbehave.
+
+This is out of the scope of this plugin. I would recommend not caching contact forms or using some kind of AJAX solution. My preference is a combination of the plugins "No-Cache" and "Sprig".
+
 ## Roadmap
 
-- simple spam protection via "time spent on form"
-- write filtered submissions to log (configurable) 
+- ~~simple spam protection via "time spent on form"~~
+- ~~write filtered submissions to log (configurable)~~ 
 
 ## Support my work
 

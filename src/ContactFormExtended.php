@@ -7,7 +7,9 @@ use craft\base\Model;
 use craft\base\Plugin;
 use craft\contactform\events\SendEvent;
 use craft\contactform\Mailer;
+use craft\log\MonologTarget;
 use craft\web\twig\variables\CraftVariable;
+use Psr\Log\LogLevel;
 use vandres\craftcontactformextended\models\Settings;
 use vandres\craftcontactformextended\services\FormService;
 use vandres\craftcontactformextended\variables\FormVariable;
@@ -111,16 +113,34 @@ class ContactFormExtended extends Plugin
             return;
         }
 
+        Craft::getLogger()->dispatcher->targets[] = new MonologTarget([
+            'name' => 'contact-form-extended',
+            'categories' => ['contact-form-extended'],
+            'level' => LogLevel::INFO,
+            'logContext' => true,
+            'allowLineBreaks' => true,
+            'maxFiles' => 30,
+        ]);
+
         Event::on(
             Mailer::class,
             Mailer::EVENT_BEFORE_SEND,
             function (SendEvent $event) {
+                // is $event already marked as spam?
+                if ($event->isSpam) {
+                    $this->formService->logSpam('Caught by Contact Form Honeypot', $event->submission, Craft::$app->getRequest());
+                }
+
                 try {
                     $this->formService->checkSubmission();
                 } catch (\Exception $error) {
-                    // TODO write log
                     Craft::warning($error->getMessage());
                     $event->isSpam = true;
+                    $this->formService->logSpam($error->getMessage(), $event->submission, Craft::$app->getRequest());
+                }
+
+                if (!$event->isSpam) {
+                    $this->formService->logAll('Successful submission', $event->submission, Craft::$app->getRequest());
                 }
             }
         );

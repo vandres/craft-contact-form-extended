@@ -24,3 +24,23 @@
     disabled:     'secondsSpentOnFormThreshold' in overrides,
     warning:      'secondsSpentOnFormThreshold' in overrides ? configWarning('secondsSpentOnFormThreshold'),
 }) }}
+
+{{ forms.lightswitchField({
+    label:        "Log spam"|t('contact-form-extended'),
+    id:           'logSpam',
+    name:         'logSpam',
+    instructions: "Logs spam to a file „contact-form-extended-[Y-m-d]“"|t('contact-form-extended'),
+    on:           settings.logSpam,
+    disabled:     'logSpam' in overrides,
+    warning:      'logSpam' in overrides ? configWarning('logSpam'),
+}) }}
+
+{{ forms.lightswitchField({
+    label:        "Log all"|t('contact-form-extended'),
+    id:           'logAll',
+    name:         'logAll',
+    instructions: "Logs all submission to a file „contact-form-extended-[Y-m-d]“"|t('contact-form-extended'),
+    on:           settings.logAll,
+    disabled:     'logAll' in overrides,
+    warning:      'logAll' in overrides ? configWarning('logAll'),
+}) }}
