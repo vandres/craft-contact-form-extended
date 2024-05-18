@@ -47,7 +47,6 @@ class ContactFormExtended extends Plugin
         $this->setUpCp();
     }
 
-    // TODO should log be written
     protected function createSettingsModel(): ?Model
     {
         return Craft::createObject(Settings::class);
@@ -128,7 +127,7 @@ class ContactFormExtended extends Plugin
             function (SendEvent $event) {
                 // is $event already marked as spam?
                 if ($event->isSpam) {
-                    $this->formService->logSpam('Caught by Contact Form Honeypot', $event->submission, Craft::$app->getRequest());
+                    $this->formService->logSpam('Caught by others (maybe Contact Form Honeypot?!)', $event->submission, Craft::$app->getRequest());
                 }
 
                 try {

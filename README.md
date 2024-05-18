@@ -1,6 +1,8 @@
 # Contact Form Extended
 
-Adds functionality to the Contact Form plugin
+Adds functionality to the Contact Form plugin.
+
+For now, it adds an additional simple spam check.
 
 ## Requirements
 
