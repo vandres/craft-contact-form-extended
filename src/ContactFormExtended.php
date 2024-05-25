@@ -127,7 +127,7 @@ class ContactFormExtended extends Plugin
             function (SendEvent $event) {
                 // is $event already marked as spam?
                 if ($event->isSpam) {
-                    $this->formService->logSpam('Caught by others (maybe Contact Form Honeypot?!)', $event->submission, Craft::$app->getRequest());
+                    $this->formService->logSpam('Caught by others (maybe Contact Form Honeypot?!)', $event->submission);
                 }
 
                 try {
@@ -135,11 +135,11 @@ class ContactFormExtended extends Plugin
                 } catch (\Exception $error) {
                     Craft::warning($error->getMessage());
                     $event->isSpam = true;
-                    $this->formService->logSpam($error->getMessage(), $event->submission, Craft::$app->getRequest());
+                    $this->formService->logSpam($error->getMessage(), $event->submission);
                 }
 
                 if (!$event->isSpam) {
-                    $this->formService->logAll('Successful submission', $event->submission, Craft::$app->getRequest());
+                    $this->formService->logAll('Successful submission', $event->submission);
                 }
             }
         );
