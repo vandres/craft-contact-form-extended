@@ -82,3 +82,7 @@ This is out of the scope of this plugin. I would recommend not caching contact f
 PayPal: https://www.paypal.com/donate/?hosted_button_id=3WDU85HZCKMPA
 
 Buy me a coffee: https://buymeacoffee.com/vandres
+
+## Supporter
+
+1. [Ambition Creative](https://www.ambitioncreative.co.uk/): Icons
